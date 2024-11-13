@@ -43,7 +43,7 @@ def run_one_training(params):
 
     print("Loading dataset...")
     train_dataset = MoleculeDataset(root="data/", filename="HIV_train_oversampled.csv")
-    test_dataset = MoleculeDataset(root="data/", filename="HIV_test.csv", test=True)
+    test_dataset = MoleculeDataset(root="data/", filename="test.csv", test=True)
     params["model_edge_dim"] = train_dataset[0].edge_attr.shape[1]
 
     # Prepare training
