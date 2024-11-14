@@ -58,7 +58,7 @@
 
 2. Installing required packages:
     ```bash
-    pip install -r requirement.txt
+    pip install -r requirements.txt
     ```
 
 ### Training GNN
