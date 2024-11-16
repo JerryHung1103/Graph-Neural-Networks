@@ -30,7 +30,7 @@ def test(epoch, model, test_loader, loss_fn):
                         batch.batch)
         loss = loss_fn(torch.squeeze(pred), batch.y.float())
 
-         # Update tracking
+
         running_loss += loss.item()
         step += 1
         all_preds.append(np.rint(torch.sigmoid(pred).cpu().detach().numpy()))
@@ -43,5 +43,4 @@ def test(epoch, model, test_loader, loss_fn):
     print(all_preds[:10])
     print(all_labels[:10])
     calculate_metrics(all_preds, all_labels, epoch, "test")
-    # log_conf_matrix(all_preds, all_labels, epoch)
     return running_loss/step

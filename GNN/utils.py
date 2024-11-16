@@ -28,19 +28,15 @@ def test(epoch, model, test_loader, loss_fn):
                         batch.edge_index,
                         batch.batch)
         loss = loss_fn(torch.squeeze(pred), batch.y.float())
-
-         # Update tracking
         running_loss += loss.item()
         step += 1
         all_preds.append(np.rint(torch.sigmoid(pred).cpu().detach().numpy()))
         all_preds_raw.append(torch.sigmoid(pred).cpu().detach().numpy())
         all_labels.append(batch.y.cpu().detach().numpy())
-
     all_preds = np.concatenate(all_preds).ravel()
     all_labels = np.concatenate(all_labels).ravel()
     print(all_preds_raw[0][:10])
     print(all_preds[:10])
     print(all_labels[:10])
     calculate_metrics(all_preds, all_labels, epoch, "test")
-    # log_conf_matrix(all_preds, all_labels, epoch)
     return running_loss/step

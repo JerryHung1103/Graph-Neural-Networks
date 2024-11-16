@@ -14,4 +14,6 @@ CNN.add(keras.layers.Dropout(0.3))
 CNN.add(keras.layers.Flatten())
 CNN.add(keras.layers.Dense(64, activation='relu', kernel_initializer='he_uniform'))
 CNN.add(keras.layers.Dense(2, activation='softmax'))
-CNN.compile(loss='categorical_crossentropy', metrics=['accuracy'])
+CNN.compile(loss='categorical_crossentropy', 
+            optimizer='adam', 
+            metrics=['accuracy', 'precision', 'recall', 'f1_score'])
