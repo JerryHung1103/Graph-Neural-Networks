@@ -20,6 +20,10 @@
   - graph_sage_embedding.py
   - model.py
   - train.py
+
+- **SVM/**
+  - train.py
+    
  
   ## 2. General Purpose of Each File
 
@@ -42,6 +46,8 @@
   - `graph_sage_embedding.py`: Defines the architecture of GraphSAGE.
   - `model.py`: Defines the architecture of a 1-dimensional CNN.
   - `train.py`: Contains the main logic for training the CNN model.
+- **SVM/**
+   - `train.py`: Contains the main logic for fitting the SVM model.
 
 - `requirements.txt`: Specifies the packages and their versions used in this project.
 
@@ -88,5 +94,20 @@
     ```
 
     **Note:** Encoding the graph using GraphSAGE before training the CNN model may take some time.
+
+
+### Fitting SVM
+
+1. Navigate to the SVM directory:
+    ```bash
+    cd SVM
+    ```
+
+2. Run the ftiiting script for the SVM model:
+    ```bash
+    python train.py
+    ```
+
+    **Note:** Encoding the graph using GraphSAGE before fitting the SVM model may take some time.
 
 ---
