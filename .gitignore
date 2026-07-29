@@ -1,0 +1,10 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+data/processed/
+.DS_Store
+.idea/
+.vscode/
+*.pt
+*.pth

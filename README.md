@@ -1,113 +1,126 @@
-# COMP 4222 Group 22 Project
-## 1. Project File Structure
-- **data/**
-  - **raw/**
-    - README.md
-    - HIV_train_oversampled.csv
-    - test.csv
+# HIV Molecule Classification with GNN / CNN / SVM
 
-- **GNN/**
-  - data_preprocessing.py
-  - hyper_parameters.py
-  - main.py
-  - model.py
-  - test.py
-  - train.py
-  - utils.py
+HKUST **COMP 4222** (Machine Learning) group project: predict HIV-related molecular activity from graph-structured molecule data.
 
-- **CNN/**
-  - featurizer.py
-  - graph_sage_embedding.py
-  - model.py
-  - train.py
+We compare three approaches on the same dataset:
 
-- **SVM/**
-  - train.py
-    
- 
-  ## 2. General Purpose of Each File
-
-- **data/**
-  - **raw/** Contains raw molecular data stored in CSV format.
-    - `HIV_train_oversampled.csv`: Dataset with oversampled instances to address class imbalance.
-    - `test.csv`: Dataset for testing and validation purposes.
-
-- **GNN/**
-  - `data_preprocessing.py`: Implements a graph converter that transforms molecular strings into graph-structured data using PyTorch Geometric, storing the processed data in `data/processed`.
-  - `hyper_parameters.py`: Stores hyperparameters for the GNN model for easy tuning.
-  - `main.py`: Main script for training and evaluating the GNN model.
-  - `model.py`: Defines the architecture and implementation of the GNN model.
-  - `test.py`: Provides testing functionality for evaluating the model performance.
-  - `train.py`: Implements training functionality for the GNN model.
-  - `utils.py`: Contains utility functions for evaluating the model's performance, such as calculating confusion metrics and determining the total number of model parameters.
-
-- **CNN/**
-  - `featurizer.py`: Provides functions for converting graph objects into embeddings using GraphSAGE.
-  - `graph_sage_embedding.py`: Defines the architecture of GraphSAGE.
-  - `model.py`: Defines the architecture of a 1-dimensional CNN.
-  - `train.py`: Contains the main logic for training the CNN model.
-- **SVM/**
-   - `train.py`: Contains the main logic for fitting the SVM model.
-
-- `requirements.txt`: Specifies the packages and their versions used in this project.
-
-## 3. Usage
-
-### Setting Up the Environment
-
-1. **Optional:** Setting up a virtual environment:
-    ```bash
-    python -m venv .venv
-    # Activate the virtual environment
-    .venv\Scripts\activate
-    ```
-
-2. Installing required packages:
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-### Training GNN
-
-1. Navigate to the GNN directory:
-    ```bash
-    cd GNN
-    ```
-
-2. Run the main script for training the GNN model:
-    ```bash
-    python main.py
-    ```
-
-    **Note:** For the first run, it may take some time to convert the molecular string into a graph.
-
-### Training CNN
-
-1. Navigate to the CNN directory:
-    ```bash
-    cd CNN
-    ```
-
-2. Run the training script for the CNN model:
-    ```bash
-    python train.py
-    ```
-
-    **Note:** Encoding the graph using GraphSAGE before training the CNN model may take some time.
-
-
-### Fitting SVM
-
-1. Navigate to the SVM directory:
-    ```bash
-    cd SVM
-    ```
-
-2. Run the ftiiting script for the SVM model:
-    ```bash
-    python train.py
-    ```
-
-    **Note:** Encoding the graph using GraphSAGE before fitting the SVM model may take some time.
+1. **GNN** — Graph Transformer layers (PyTorch Geometric)
+2. **CNN** — GraphSAGE embeddings + 1D CNN classifier
+3. **SVM** — classical baseline on GraphSAGE features
 
 ---
+
+## Problem
+
+Molecular compounds are naturally **graphs** (atoms = nodes, bonds = edges).  
+This project converts SMILES / molecular records into graphs, then trains models to classify them — a common pattern in cheminformatics and drug discovery ML.
+
+---
+
+## Highlights
+
+| Model | Idea | Stack |
+|-------|------|--------|
+| **GNN** | End-to-end learning on molecular graphs | PyTorch Geometric `TransformerConv`, TopK pooling |
+| **CNN** | GraphSAGE embeddings → 1D CNN | GraphSAGE + CNN |
+| **SVM** | Classical baseline on fixed embeddings | scikit-learn SVM |
+
+Dataset handling includes an **oversampled** training CSV to mitigate class imbalance.
+
+---
+
+## Project structure
+
+```
+Graph-Neural-Networks/
+├── data/
+│   └── raw/                 # HIV train (oversampled) + test CSV
+├── GNN/                     # Full GNN train / eval pipeline
+├── CNN/                     # GraphSAGE + CNN
+├── SVM/                     # SVM baseline
+└── requirements.txt
+```
+
+### What each folder does
+
+**`GNN/`**
+- `data_preprocessing.py` — molecule → PyG graph (cached under `data/processed`)
+- `model.py` — Graph Transformer GNN
+- `train.py` / `test.py` / `main.py` — training and evaluation entrypoints
+- `hyper_parameters.py` — tunable hyperparameters
+- `utils.py` — metrics / helpers
+
+**`CNN/`**
+- GraphSAGE embedding + 1D CNN classifier
+
+**`SVM/`**
+- Fit an SVM on GraphSAGE features
+
+---
+
+## Setup
+
+```bash
+git clone https://github.com/JerryHung1103/Graph-Neural-Networks.git
+cd Graph-Neural-Networks
+
+python -m venv .venv
+# Windows
+.venv\Scripts\activate
+# macOS / Linux
+# source .venv/bin/activate
+
+pip install -r requirements.txt
+```
+
+> Tip: PyTorch Geometric install can be platform-specific. If `pip install -r requirements.txt` fails on PyG packages, follow the official [PyG install guide](https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html) for your CUDA / CPU setup, then retry.
+
+---
+
+## Usage
+
+### Train GNN
+
+```bash
+cd GNN
+python main.py
+```
+
+First run may take longer while molecular strings are converted to graphs.
+
+### Train CNN
+
+```bash
+cd CNN
+python train.py
+```
+
+GraphSAGE encoding before CNN training can take time.
+
+### Fit SVM baseline
+
+```bash
+cd SVM
+python train.py
+```
+
+---
+
+## Skills demonstrated
+
+- Graph neural networks for structured scientific data
+- Comparing deep (GNN/CNN) vs classical (SVM) baselines
+- Data preprocessing / imbalance handling
+- Reproducible experiment layout (separate model folders + shared data)
+
+---
+
+## Course
+
+COMP 4222 — Group 22 project (HKUST).
+
+---
+
+## License
+
+Academic course project for portfolio / learning use.
